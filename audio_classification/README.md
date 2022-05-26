@@ -1,4 +1,16 @@
-# TensorFlow Lite Python audio classification example with Raspberry Pi.
+# alpiepho fort
+
+## Additional install
+
+Needed sudo apt-get install libportaudio2
+ from:
+ 
+https://python-sounddevice.readthedocs.io/en/latest/installation.html
+
+
+
+
+# (Original) TensorFlow Lite Python audio classification example with Raspberry Pi.
 
 This example uses [TensorFlow Lite](https://tensorflow.org/lite) with Python
 on a Raspberry Pi to perform real-time audio classification using audio
