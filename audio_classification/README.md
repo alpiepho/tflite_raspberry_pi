@@ -4,7 +4,7 @@
 
 Needed sudo apt-get install libportaudio2
  from:
- 
+
 https://python-sounddevice.readthedocs.io/en/latest/installation.html
 
 
@@ -80,6 +80,13 @@ python3 classify.py
 python3 classify.py \
   --model yamnet.tflite \
   --maxResults 5
+```
+or
+```
+python3 classify.py \
+  --model yamnet.tflite \
+  --maxResults 5 \
+  --DenyList "Silence, Speech"
 ```
 
 ## Speed up the inference time (optional)

@@ -23,7 +23,8 @@ from utils import Plotter
 
 def run(model: str, max_results: int, score_threshold: float,
         overlapping_factor: float, num_threads: int,
-        enable_edgetpu: bool) -> None:
+        enable_edgetpu: bool,
+        label_deny_list: None) -> None:
   """Continuously run inference on audio data acquired from the device.
 
   Args:
@@ -33,6 +34,7 @@ def run(model: str, max_results: int, score_threshold: float,
     overlapping_factor: Target overlapping between adjacent inferences.
     num_threads: Number of CPU threads to run the model.
     enable_edgetpu: Whether to run the model on EdgeTPU.
+    label_deny_list: List of Categories to skip.
   """
 
   if (overlapping_factor <= 0) or (overlapping_factor >= 1.0):
@@ -46,7 +48,8 @@ def run(model: str, max_results: int, score_threshold: float,
       num_threads=num_threads,
       max_results=max_results,
       score_threshold=score_threshold,
-      enable_edgetpu=enable_edgetpu)
+      enable_edgetpu=enable_edgetpu,
+      label_deny_list=label_deny_list)
   classifier = AudioClassifier(model, options)
 
   # Initialize the audio recorder and a tensor to store the audio input.
@@ -86,6 +89,7 @@ def run(model: str, max_results: int, score_threshold: float,
     # Plot the classification results.
     plotter.plot(categories)
 
+    #print(categories)
 
 def main():
   parser = argparse.ArgumentParser(
@@ -121,11 +125,21 @@ def main():
       action='store_true',
       required=False,
       default=False)
+  parser.add_argument(
+      '--DenyList',
+      help='List of Categories to skip/deny.',
+      required=False,
+      default=False)
   args = parser.parse_args()
+
+  label_deny_list = None
+  if args.DenyList:
+    label_deny_list = args.DenyList.split(',')
+    label_deny_list = [label.strip() for label in label_deny_list]
 
   run(args.model, int(args.maxResults), float(args.scoreThreshold),
       float(args.overlappingFactor), int(args.numThreads),
-      bool(args.enableEdgeTPU))
+      bool(args.enableEdgeTPU), label_deny_list)
 
 
 if __name__ == '__main__':
